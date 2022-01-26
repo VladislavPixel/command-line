@@ -29,8 +29,8 @@ yargs.command({
 yargs.command({
 	command: "list",
 	describe: "Print all notes",
-	handler() {
-		const notes = getNotes()
+	async handler() {
+		const notes = await getNotes()
 		console.log("All notes: ", notes)
 	}
 })
