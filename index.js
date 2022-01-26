@@ -1,6 +1,6 @@
 const yargs = require("yargs")
 const pkg = require("./package.json")
-const { addNotes, printNotes } = require("./notes.controller")
+const { addNotes, printNotes, removeNoteById } = require("./notes.controller")
 
 yargs.version(pkg.version)
 
@@ -8,16 +8,16 @@ console.log(process.argv) // Массив со всеми аргументами
 
 yargs.command({
 	command: "add",
-	describe: "add new note to list",
+	describe: "Add new note to list",
 	builder: {
 		title: {
 			type: "string",
-			describe: "note title",
+			describe: "Note title",
 			demandOption: true
 		},
 		tag: {
 			type: "string",
-			describe: "some tag",
+			describe: "Some tag",
 			demandOption: true
 		}
 	},
@@ -31,6 +31,21 @@ yargs.command({
 	describe: "Print all notes",
 	handler() {
 		printNotes()
+	}
+})
+
+yargs.command({
+	command: "remove",
+	describe: "Remove note by ID",
+	builder: {
+		id: {
+			type: "string",
+			describe: "Some id note",
+			demandOption: true
+		}
+	},
+	handler(options) {
+		removeNoteById(options.id)
 	}
 })
 

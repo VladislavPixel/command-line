@@ -23,15 +23,23 @@ async function getNotes() {
 	return Array.isArray(JSON.parse(notesDB)) ? JSON.parse(notesDB) : []
 }
 
+async function removeNoteById(id) {
+	const notesDB = await getNotes()
+	const newArrayNotes = notesDB.filter(note => note.id !== id)
+	await fs.writeFile(notesPath, JSON.stringify(newArrayNotes))
+	console.log(chalk.red.inverse(`Note ${id} deleted!`))
+}
+
 async function printNotes() {
 	const notesDB = await getNotes()
-	console.log(chalk.inverse("This is list of notes: "))
+	console.log(chalk.blue.inverse("This is list of notes: "))
 	notesDB.forEach(note => {
-		console.log(chalk.yellow.inverse(JSON.stringify(note)))
+		console.log(chalk.yellow.inverse(`Title: ${note.title}, ID: ${note.id}, Tag: ${note.tag}`))
 	})
 }
 
 module.exports = {
 	addNotes,
-	printNotes
+	printNotes,
+	removeNoteById
 }
