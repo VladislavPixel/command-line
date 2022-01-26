@@ -1,5 +1,6 @@
 const fs = require("fs/promises")
 const path = require("path")
+const chalk = require("chalk")
 
 const notesPath = path.join(__dirname, "db.json")
 
@@ -13,6 +14,8 @@ async function addNotes(title, tag) {
 	notesDB.push(note)
 
 	await fs.writeFile(notesPath, JSON.stringify(notesDB))
+
+	console.log(chalk.green.inverse("Note added!"))
 }
 
 async function getNotes() {
@@ -20,7 +23,15 @@ async function getNotes() {
 	return Array.isArray(JSON.parse(notesDB)) ? JSON.parse(notesDB) : []
 }
 
+async function printNotes() {
+	const notesDB = await getNotes()
+	console.log(chalk.inverse("This is list of notes: "))
+	notesDB.forEach(note => {
+		console.log(chalk.yellow.inverse(JSON.stringify(note)))
+	})
+}
+
 module.exports = {
 	addNotes,
-	getNotes
+	printNotes
 }
