@@ -38,8 +38,18 @@ async function printNotes() {
 	})
 }
 
+async function editNoteById(newTitle, id) {
+	const notesDB = await getNotes()
+	const index = notesDB.findIndex(note => note.id === id)
+	console.log(newTitle)
+	notesDB[index] = {...notesDB[index], title: newTitle}
+	await fs.writeFile(notesPath, JSON.stringify(notesDB))
+	console.log(chalk.blue.inverse(`Note by id: ${id} updated!`))
+}
+
 module.exports = {
 	addNotes,
 	printNotes,
-	removeNoteById
+	removeNoteById,
+	editNoteById
 }
